@@ -1,0 +1,61 @@
+@import '../variables.scss';
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: fixed;
+    max-width: 1000px;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    ul{
+        list-style-type: none;
+    }
+    .fa-bars{
+        font-size: 32px;
+        margin-right: 10px;
+        color: $secondaryColor
+    }
+    h1{
+        margin-right: auto;
+        color: $secondaryColor
+    }
+
+    #menu{
+        position: fixed;
+        transition: .5s;
+        background-color: $primaryColor;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 0;
+        overflow: hidden;
+        color: $secondaryColor;
+        display: flex;
+        flex-direction: column;
+        .fa-close{
+            margin-left: auto;
+            font-size: 32px;
+            padding: 10px;
+        }
+
+        li{
+            margin-bottom: 15px;
+        }
+        .dropdownMenus{
+            height: 0;
+            overflow: hidden;
+        }
+    }
+
+    .menuOpen{
+        padding: 20px;
+        width: 60% !important;
+    }
+
+    input[type=search]{
+        font-size: 13px;
+        height: max-content;
+    }
+}

@@ -5,7 +5,7 @@ header{
     align-items: center;
     padding: 20px;
     position: fixed;
-    max-width: 1000px;
+    max-width: 1080px;
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
@@ -19,7 +19,8 @@ header{
     }
     h1{
         margin-right: auto;
-        color: $secondaryColor
+        color: $secondaryColor;
+        width: max-content
     }
 
     #menu{
@@ -42,20 +43,82 @@ header{
 
         li{
             margin-bottom: 15px;
+            min-width: 200px;
+            color: $secondaryColor;
         }
         .dropdownMenus{
-            height: 0;
+            max-height: 0;
             overflow: hidden;
+            transition: .5s;
+            width: 90%;
+            margin-left: auto;
+            li{
+                margin-bottom: 10px;
+                &:hover{
+                    color: $quarternaryColor
+                }
+
+            }
+            
+        }
+        .openDropDownMenu{
+            max-height: 300px;
         }
     }
 
     .menuOpen{
         padding: 20px;
-        width: 60% !important;
+        width: 70% !important;
     }
 
     input[type=search]{
         font-size: 13px;
         height: max-content;
+        background-color: $primaryColor;
+        border: none;
+        outline: none;
+        padding: 5px 10px;
+        border-radius: 12px;
+        color: $quarternaryColor;
     }
+}
+
+@media only screen and(min-width : 850px){
+    header{
+        justify-content: flex-start;
+        .fa-bars, .fa-close{
+            display: none;
+        }
+        h1{
+            margin-right: 50px;
+        }
+        #menu{
+            position: relative;
+            width: max-content !important;
+            height: 100%;
+            flex-direction: row;
+            background-color: transparent;
+            align-items: center;
+
+            li{
+                min-width: max-content;
+                margin-bottom: 0;
+                h2{
+                    margin-right: 20px;
+                }
+            }
+
+            .dropdownMenus{
+                position: fixed;
+                width: max-content;
+                transition: 0s;
+                
+            }
+        }
+        input[type=search]{
+            margin-left: auto;
+
+        }
+    }
+    
 }

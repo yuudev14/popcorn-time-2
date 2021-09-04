@@ -1,4 +1,5 @@
 @import '../centerScreen.scss';
+@import './commingSoon/commingSoon.scss';
 #homePage{
-    background-color: red;
+    @include commingSoon;
 }

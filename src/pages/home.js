@@ -1,12 +1,11 @@
 import React from 'react'
+import CommingSoon from '../components/home/commingSoon';
 import '../styles/home/home.scss';
 
 const Home = () => {
     return (
         <div id='homePage'>
-            <header>
-                
-            </header>
+            <CommingSoon />
         </div>
     )
 }

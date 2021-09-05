@@ -37,6 +37,9 @@
                     @include showInfo;
                     // padding: 20px;
                 }
+                .hideInfo{
+                   opacity: 0;
+                }
             }
             .showPosterContainer{
                 display: none;
@@ -75,6 +78,13 @@
     @media only screen and (min-width: 550px){
         #commingSoon{
             .commingSoonContainer{
+                .showinfoContainer{
+                    width: 70%;
+                }
+                .showPosterContainer{
+                    width: 30%;
+                    display: block;
+                }
             }
         }
     }

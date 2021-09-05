@@ -38,11 +38,14 @@
                 margin-right: 5px;
                 font-size: 10px;
                 border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
     .shortInfo{
-        list-style-type: circle;
+        list-style-type: none;
         margin-bottom: 20px;
         .rating{
             font-size: 16px;

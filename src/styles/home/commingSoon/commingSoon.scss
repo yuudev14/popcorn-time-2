@@ -44,15 +44,15 @@
             .showPosterContainer{
                 display: none;
                 z-index: 2;
+                height: 100%;
             }
             .slideBtn{
                 z-index: 3;
                 background-color: transparent;
                 color: $secondaryColor;
-                outline: none;
-                border: none;
                 height: max-content;
                 margin: 20px;
+                font-size: 32px;
             }
             .prev{
                 margin-right: 30px;
@@ -83,7 +83,22 @@
                 }
                 .showPosterContainer{
                     width: 30%;
-                    display: block;
+                    display: flex;
+                    height: 100%;
+                    flex-direction: column;
+                    .poster{
+                        min-height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        img{
+                            width: 70%;
+                            min-width: 150px;
+                        }
+                    }
+                    .hidePoster{
+                        opacity: 0;
+                     }
                 }
             }
         }

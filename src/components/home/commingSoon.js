@@ -5,7 +5,8 @@ import sampleCover from '../../assets/sample.jpg';
 import axios from 'axios';
 
 const CommingSoon = () => {
-    const [showNum, setShowNum] = useState();
+    const [showNum, setShowNum] = useState(-1);
+    const [genres, setGenres] = useState([]);
     const [timeOut, setTimeOut] = useState();
     const prevShowNum = usePrevious(showNum);
     const [throttleTime, setThrottleTime] = useState(0);
@@ -23,12 +24,13 @@ const CommingSoon = () => {
         
         (async() => {
             try {
+                const movieGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US');
+                const tvGenre = await axios.get('https://api.themoviedb.org/3/genre/tv/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US');
+                setGenres([...tvGenre.data.genres, ...movieGenre.data.genres])
                 const commingSoonRequest = await axios.get('https://api.themoviedb.org/3/trending/all/day?api_key=2effcb37ac7b1550616d653eea9cb4d6');
-
-                const data = commingSoonRequest.data.results.filter(data => data.media_type !== 'person');
-                console.log(data);
-
+                const data = commingSoonRequest.data.results.filter(data => data.media_type !== 'person')
                 setCommingSoon(data);
+                console.log(data);
                 setTimeOut(setTimeout(() => {            
                     setShowNum(0);
                 }))
@@ -47,6 +49,7 @@ const CommingSoon = () => {
     const showPoster = document.querySelectorAll('#commingSoon .poster')
 
     useEffect(() => {
+        console.log(showNum, prevShowNum)
         showInfo.forEach((element, i) => {
 
             //when the slidesho comes back from the start, the last show's transition would be none to fixed animation error
@@ -118,7 +121,6 @@ const CommingSoon = () => {
 
         const time = new Date().getTime();
         if(time > throttleTime ){
-            console.log(true);
             setThrottleTime(time + 500);
             clearTimeout(timeOut);
             setTimeOut();
@@ -141,39 +143,44 @@ const CommingSoon = () => {
             <section className='commingSoonContainer'> 
                 <i className='slideBtn fa fa-arrow-circle-left' onClick={() => changeShow(-1)}></i>
                 <div className='showinfoContainer'>
-                    {commingSoon.map((item, i) => (
-                        <div className='showInfo'>
-                        <ul className='genres'>
-                        <li style={{backgroundColor : colors[randomNumber(colors.length - 1)]}}>Action</li>
-                            <li style={{backgroundColor : colors[randomNumber(colors.length - 1)]}}>drama</li>
-                        </ul>
-                        <h1>Guardians of the galaxy{i}</h1>
-                        <ul className='buttons'>
-                            <li>
-                                <i className='fa fa-play'></i>
-                                <p>Watch trailer</p>
-                            </li>
+                    {commingSoon.map((show, i) => (
+                        <div key={i} className='showInfo'>
+                            <ul className='genres'>
+                                {show.genre_ids.map(genre => genres[genres.findIndex(genres => genres.id === genre)].name)
+                                                .map(name => (
+                                                    <li style={{backgroundColor : colors[randomNumber(colors.length - 1)]}}>{name}</li>
 
-                            <li>
-                                <i className='fa fa-heart'></i>
-                                <p>Add To Favorites</p>
-                            </li>
-                        </ul>
+                                                ))}
+                                
+                        
+                            </ul>
+                            <h1>{show.name || show.title}</h1>
+                            <ul className='buttons'>
+                                <li>
+                                    <i className='fa fa-play'></i>
+                                    <p>Watch trailer</p>
+                                </li>
 
-                        <ul className='shortInfo'>
-                            <li className='rating'>10/10</li>
-                            <li>Run Time: </li>
-                            <li>Release Date: May 1 2015</li>
-                        </ul>
-                        <button className='moreDetails'>More Details</button>
+                                <li>
+                                    <i className='fa fa-heart'></i>
+                                    <p>Add To Favorites</p>
+                                </li>
+                            </ul>
 
-                    </div>
+                            <ul className='shortInfo'>
+                                <li className='rating'>10/10</li>
+                                <li>Run Time: </li>
+                                <li>Release Date: May 1 2015</li>
+                            </ul>
+                            <button className='moreDetails'>More Details</button>
+
+                        </div>
                     ))}
                 </div>
                 <div className='showPosterContainer'>
                     {commingSoon.map(show => (
                         <div className='poster'>
-                            <img src={sampleCover} />
+                            <img src={`http://image.tmdb.org/t/p/w500/${show.poster_path}`} />
                         </div>
                         
                     ))}

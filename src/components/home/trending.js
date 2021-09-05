@@ -4,22 +4,26 @@ import { randomNumber } from '../../methods/method';
 import sampleCover from '../../assets/sample.jpg';
 import axios from 'axios';
 
-const CommingSoon = () => {
+const Trending = () => {
     const [showNum, setShowNum] = useState(-1);
     const [genres, setGenres] = useState([]);
-    const [timeOut, setTimeOut] = useState();
+    const [timeOut, setTimeOut] = useState([]);
     const prevShowNum = usePrevious(showNum);
     const [throttleTime, setThrottleTime] = useState(0);
-    const [commingSoon, setCommingSoon] = useState([])
+    const [trending, setTrending] = useState([])
 
     const colors = ['#62bccc', '#337ac0', '#ee9323', '#F2b922']
 
     const setShowNumTimeout = () => {
-        setTimeOut(setTimeout(() => {            
-            setShowNum(showNum >= commingSoon.length - 1 ? 0 : showNum + 1);
-        }, 5000))
+        setTimeOut([...timeOut, setTimeout(() => {            
+            setShowNum(showNum >= trending.length - 1 ? 0 : showNum + 1);
+        }, 5000)])
         
     }
+    useEffect(() => {
+        console.log(timeOut, 'hi')
+
+    }, [timeOut])
     useEffect(() => {
         
         (async() => {
@@ -27,13 +31,13 @@ const CommingSoon = () => {
                 const movieGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US');
                 const tvGenre = await axios.get('https://api.themoviedb.org/3/genre/tv/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US');
                 setGenres([...tvGenre.data.genres, ...movieGenre.data.genres])
-                const commingSoonRequest = await axios.get('https://api.themoviedb.org/3/trending/all/day?api_key=2effcb37ac7b1550616d653eea9cb4d6');
-                const data = commingSoonRequest.data.results.filter(data => data.media_type !== 'person')
-                setCommingSoon(data);
+                const trendingRequest = await axios.get('https://api.themoviedb.org/3/trending/all/day?api_key=2effcb37ac7b1550616d653eea9cb4d6');
+                const data = trendingRequest.data.results.filter(data => data.media_type !== 'person')
+                setTrending(data);
                 console.log(data);
-                setTimeOut(setTimeout(() => {            
+                setTimeOut([...timeOut, setTimeout(() => {            
                     setShowNum(0);
-                }))
+                })])
             
                 
             } catch (error) {
@@ -45,20 +49,20 @@ const CommingSoon = () => {
         
         
     }, []);
-    const showInfo = document.querySelectorAll('#commingSoon .showInfo');
-    const showPoster = document.querySelectorAll('#commingSoon .poster')
+    const showInfo = document.querySelectorAll('#trending .showInfo');
+    const showPoster = document.querySelectorAll('#trending .poster')
 
     useEffect(() => {
-        console.log(showNum, prevShowNum)
+        
         showInfo.forEach((element, i) => {
 
             //when the slidesho comes back from the start, the last show's transition would be none to fixed animation error
             if(showNum === 0){
-                if(i === commingSoon.length - 1){
+                if(i === trending.length - 1){
                     element.style.transition = '0s';
                 }   
             //when user clicks previous button and reaches the end of the show, the transition of both first and last show would be none
-            }else if(prevShowNum === 0 && showNum === commingSoon.length - 1){
+            }else if(prevShowNum === 0 && showNum === trending.length - 1){
                 element.style.transition = '0s';
 
             }else{
@@ -83,11 +87,11 @@ const CommingSoon = () => {
 
         showPoster.forEach((element, i) => {
             if(showNum === 0){
-                if(i === commingSoon.length - 1){
+                if(i === trending.length - 1){
                     element.style.transition = '0s';
                 }   
             //when user clicks previous button and reaches the end of the show, the transition of both first and last show would be none
-            }else if(prevShowNum === 0 && showNum === commingSoon.length - 1){
+            }else if(prevShowNum === 0 && showNum === trending.length - 1){
                 element.style.transition = '0s';
 
             }else{
@@ -117,33 +121,35 @@ const CommingSoon = () => {
     }, [showNum]);
 
     const changeShow = (val) => {
-        clearTimeout();
 
         const time = new Date().getTime();
         if(time > throttleTime ){
             setThrottleTime(time + 500);
-            clearTimeout(timeOut);
-            setTimeOut();
+            timeOut.forEach(timeId => {
+                clearTimeout(timeId);
+            })
+            
             val = showNum + val
             setShowNum((prevState) => {
                 if(val < prevState){
                     if(val <= -1){
-                        return commingSoon.length - 1
+                        return trending.length - 1
                     }
 
                 }
-                return val >= commingSoon.length ? 0 : val;
+                return val >= trending.length ? 0 : val;
 
             });
+            setTimeOut([]);
         }
     }
     return (
-        <div id='commingSoon'>
+        <div id='trending'>
             <div className='containerOpacity'></div>
-            <section className='commingSoonContainer'> 
+            <section className='trendingContainer'> 
                 <i className='slideBtn fa fa-arrow-circle-left' onClick={() => changeShow(-1)}></i>
                 <div className='showinfoContainer'>
-                    {commingSoon.map((show, i) => (
+                    {trending.map((show, i) => (
                         <div key={i} className='showInfo'>
                             <ul className='genres'>
                                 {show.genre_ids.map(genre => genres[genres.findIndex(genres => genres.id === genre)].name)
@@ -178,7 +184,7 @@ const CommingSoon = () => {
                     ))}
                 </div>
                 <div className='showPosterContainer'>
-                    {commingSoon.map(show => (
+                    {trending.map(show => (
                         <div className='poster'>
                             <img src={`http://image.tmdb.org/t/p/w500/${show.poster_path}`} />
                         </div>
@@ -193,4 +199,4 @@ const CommingSoon = () => {
     )
 }
 
-export default CommingSoon
+export default Trending

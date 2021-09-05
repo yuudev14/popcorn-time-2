@@ -1,5 +1,5 @@
 @import '../centerScreen.scss';
-@import './commingSoon/commingSoon.scss';
+@import './trending/trending.scss';
 #homePage{
-    @include commingSoon;
+    @include trending;
 }

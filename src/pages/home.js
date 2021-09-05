@@ -1,11 +1,11 @@
 import React from 'react'
-import CommingSoon from '../components/home/commingSoon';
+import Trending from '../components/home/trending';
 import '../styles/home/home.scss';
 
 const Home = () => {
     return (
         <div id='homePage'>
-            <CommingSoon />
+            <Trending />
         </div>
     )
 }

@@ -1,14 +1,14 @@
 @import '../../variables.scss';
 @import './showInfo.scss';
-@mixin commingSoon {
-    #commingSoon{
+@mixin trending {
+    #trending{
         height: 500px;
         margin-top: 80px;
         width: 100% !important;
         background: url('../../../assets/cover.jpg') no-repeat center center fixed;
         background-size: cover;
         position: relative;
-        .commingSoonContainer{
+        .trendingContainer{
             
             display: flex;
             height: 100%;
@@ -76,8 +76,8 @@
     }
 
     @media only screen and (min-width: 550px){
-        #commingSoon{
-            .commingSoonContainer{
+        #trending{
+            .trendingContainer{
                 .showinfoContainer{
                     width: 70%;
                 }

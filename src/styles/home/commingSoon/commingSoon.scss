@@ -16,15 +16,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            button{
-                z-index: 3;
-                background-color: transparent;
-                color: $secondaryColor;
-                outline: none;
-                border: none;
-                height: max-content;
-                margin: 20px;
-            }
+            
             // .prev{
             //     top: 50%;
             //     transform: translateY(-50%);
@@ -49,6 +41,22 @@
             .showPosterContainer{
                 display: none;
                 z-index: 2;
+            }
+            .slideBtn{
+                z-index: 3;
+                background-color: transparent;
+                color: $secondaryColor;
+                outline: none;
+                border: none;
+                height: max-content;
+                margin: 20px;
+            }
+            .prev{
+                margin-right: 30px;
+            }
+            .next{
+                margin-left: 30px;
+
             }
 
         }

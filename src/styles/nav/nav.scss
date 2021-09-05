@@ -4,7 +4,7 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     position: fixed;
     max-width: 1080px;
     width: 100vw;
@@ -19,10 +19,11 @@ header{
         margin-right: 10px;
         color: $secondaryColor
     }
-    h1{
+    img{
         margin-right: auto;
         color: $secondaryColor;
-        width: max-content
+        width: 70px;
+        height: 70px;
     }
 
     #menu{
@@ -91,7 +92,7 @@ header{
         .fa-bars, .fa-close{
             display: none;
         }
-        h1{
+        img{
             margin-right: 50px;
         }
         #menu{

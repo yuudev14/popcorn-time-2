@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
 import '../../styles/nav/nav.scss'
+import logo from '../../assets/logo.png'
 
 const Nav = () => {
     const menuRef = useRef();
@@ -18,7 +19,7 @@ const Nav = () => {
         <header>
 
             <i className='fa fa-bars' onClick={toggleMenu}></i>
-            <h1>Popcorn Time</h1>
+            <img src={logo} />
             <ul id='menu' ref={menuRef}>
                 <i className='fa fa-close' onClick={toggleMenu}></i>
                 <li>

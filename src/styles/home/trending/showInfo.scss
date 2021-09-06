@@ -27,13 +27,21 @@
     .buttons{
         display: flex;
         margin: 10px 0;
+        a{
+            color: $quinaryColor;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
         li{
             display: flex;
             align-items: center;
-            color: $secondaryColor;
+            color: $quinaryColor;
+            cursor: pointer;
+            
             margin-right: 10px;
             i{
-                border: 3px solid $secondaryColor;
+                border: 3px solid $quinaryColor;
                 padding: 7px;
                 margin-right: 5px;
                 font-size: 10px;

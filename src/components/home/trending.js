@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import {usePrevious} from 'react-use';
 import { randomNumber, saveFromFavorites } from '../../methods/method';
 import { connect } from 'react-redux';
@@ -11,10 +11,15 @@ const Trending = (props) => {
         trendings
 
     } = props;
+
     const [showNum, setShowNum] = useState(-1);
     const [timeOut, setTimeOut] = useState([]);
     const prevShowNum = usePrevious(showNum);
     const [throttleTime, setThrottleTime] = useState(0);
+    const [throttleTime2, setThrottleTime2] = useState(0);
+    const [dayMode, setDayMode] = useState('day');
+    const prevDayMode = usePrevious(dayMode)
+    const daySwitch = useRef()
 
     const colors = ['#62bccc', '#337ac0', '#ee9323', '#F2b922']
 
@@ -25,23 +30,51 @@ const Trending = (props) => {
         
     }
     useEffect(() => {
-
         (async() => {
-            await getTrendingDispatch();
-            setTimeOut([...timeOut, setTimeout(() => {            
+            await getTrendingDispatch(dayMode);
+            
+            setTimeOut([setTimeout(() => {            
                 setShowNum(0);
-            })])
+            })]);
+
+            timeOut.forEach(timeId => {
+                clearTimeout(timeId);
+            })
 
         })()
+
 
         
         
         
     }, []);
+    useEffect(() => {
+        
+        if(prevDayMode !== undefined || prevDayMode !== dayMode){
+            
+            (async() => {
+                
+            
+                await getTrendingDispatch(dayMode);
+                setTimeOut([...timeOut, setTimeout(() => {            
+                    setShowNum(0);
+                })]);
+    
+            })()
+
+        }
+
+
+        
+        
+    }, [dayMode]);
     const showInfo = document.querySelectorAll('#trending .showInfo');
     const showPoster = document.querySelectorAll('#trending .poster')
 
     useEffect(() => {
+        timeOut.forEach(timeId => {
+            clearTimeout(timeId);
+        })
         
         showInfo.forEach((element, i) => {
 
@@ -102,8 +135,12 @@ const Trending = (props) => {
             }
 
         })
+        if(prevShowNum !== undefined){
+            setShowNumTimeout();
 
-        setShowNumTimeout();
+        }
+
+        
         
         
         
@@ -129,15 +166,43 @@ const Trending = (props) => {
                 return val >= trendings.length ? 0 : val;
 
             });
-            setTimeOut([]);
         }
+    }
+
+    const dayModeChange = (e) =>{
+        const val = e.target.checked
+
+        const time = new Date().getTime();
+        if(time > throttleTime2 ){
+            
+            setThrottleTime2(time + 1000);
+            [...showInfo, ...showPoster].forEach(element => {
+                element.style.transition = '0.5s';
+
+            })
+            setDayMode(val ? 'week' : 'day')
+        }
+        
+        
+        
     }
 
     
     return (
         <div id='trending'>
             <div className='containerOpacity'></div>
+            
             <section className='trendingContainer'> 
+                <input checked={dayMode === 'day' ? false : true} onChange={dayModeChange} type='checkbox' id='media_type' name='media_type'/>
+                <label htmlFor='media_type'>
+                    
+                    <p className='daySwitch'>Day</p>
+                    <p className='weekSwitch'>Week</p>
+                    <div className='circle'>
+
+                    </div>
+
+                </label>
                 <i className='slideBtn fa fa-arrow-circle-left' onClick={() => changeShow(-1)}></i>
                 <div className='showinfoContainer'>
                     {trendings.map((show, i) => (
@@ -200,7 +265,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        getTrendingDispatch : () => dispatch(getTrendingAction())
+        getTrendingDispatch : (dayMode) => dispatch(getTrendingAction(dayMode))
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Trending)

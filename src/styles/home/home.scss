@@ -1,5 +1,9 @@
 @import '../centerScreen.scss';
 @import './trending/trending.scss';
+@import './showSection/showSection.scss';
 #homePage{
+    display: flex;
+    flex-direction: column;
     @include trending;
+    @include showSection
 }

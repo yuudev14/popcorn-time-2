@@ -17,34 +17,37 @@ const Nav = () => {
     }
     return (
         <header>
+            <div id='nav'>
+                <i className='fa fa-bars' onClick={toggleMenu}></i>
+                <img src={logo} />
+                <ul id='menu' ref={menuRef}>
+                    <i className='fa fa-close' onClick={toggleMenu}></i>
+                    <li>
+                        <h2 onClick={() => toggleDropDown(movieRef)}>Movies</h2>
+                        <ul className='dropdownMenus' ref={movieRef} onClick={toggleMenu}>
+                            <li>Popular</li>
+                            <li>Popular</li>
+                            <li>Popular</li>
+                            <li>Popular</li>
 
-            <i className='fa fa-bars' onClick={toggleMenu}></i>
-            <img src={logo} />
-            <ul id='menu' ref={menuRef}>
-                <i className='fa fa-close' onClick={toggleMenu}></i>
-                <li>
-                    <h2 onClick={() => toggleDropDown(movieRef)}>Movies</h2>
-                    <ul className='dropdownMenus' ref={movieRef} onClick={toggleMenu}>
-                        <li>Popular</li>
-                        <li>Popular</li>
-                        <li>Popular</li>
-                        <li>Popular</li>
+                        </ul>
+                    </li>
 
-                    </ul>
-                </li>
+                    <li>
+                        <h2 onClick={() => toggleDropDown(tvRef)}>TV</h2>
+                        <ul className='dropdownMenus' ref={tvRef} onClick={toggleMenu}>
+                            <li>Popular</li>
 
-                <li>
-                    <h2 onClick={() => toggleDropDown(tvRef)}>TV</h2>
-                    <ul className='dropdownMenus' ref={tvRef} onClick={toggleMenu}>
-                        <li>Popular</li>
+                        </ul>
+                    </li>
 
-                    </ul>
-                </li>
+                    <li><h2>Advance Search</h2></li>
+                </ul>
 
-                <li><h2>Advance Search</h2></li>
-            </ul>
+                <input type='search' />
+            </div>
 
-            <input type='search' />
+            
             
             
         </header>

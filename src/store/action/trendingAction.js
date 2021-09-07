@@ -1,12 +1,12 @@
 import axios from "axios";
 import { SET_TRENDING } from "../type";
-export const getTrendingAction = () => {
+export const getTrendingAction = (dayMode) => {
     return async(dispatch)=> {
         let genres = [];
         const movieGenre = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US`);
         const tvGenre = await axios.get(`https://api.themoviedb.org/3/genre/tv/list?api_key=2effcb37ac7b1550616d653eea9cb4d6&language=en-US`);
         genres = [...movieGenre.data.genres, ...tvGenre.data.genres]
-        const trendingRequest = await axios.get('https://api.themoviedb.org/3/trending/all/day?api_key=2effcb37ac7b1550616d653eea9cb4d6');
+        const trendingRequest = await axios.get(`https://api.themoviedb.org/3/trending/all/${dayMode}?api_key=2effcb37ac7b1550616d653eea9cb4d6`);
         let data = trendingRequest.data.results.filter(data => data.media_type !== 'person');
         data.forEach(async(show, index) => {
             try {

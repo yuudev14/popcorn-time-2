@@ -19,6 +19,13 @@ export const getTrendingAction = (dayMode) => {
                 
                 show.genres = show.genre_ids.map(genreId => genres[genres.findIndex(genre => genre.id === genreId)].name)
                 data[index] = show
+                if(index === data.length - 1){
+                    dispatch({
+                        type : SET_TRENDING,
+                        data
+                    });
+
+                }
                 
             } catch (error) {
                 console.log(error);
@@ -27,10 +34,7 @@ export const getTrendingAction = (dayMode) => {
             
             
         });
-        dispatch({
-            type : SET_TRENDING,
-            data
-        });
+        
         return
     }
 }

@@ -1,0 +1,19 @@
+@import '../variables.scss';
+@import './detailHeader.scss';
+@import './overview_reviews.scss';
+#details{
+    section{
+        max-width: 1200px !important;
+        padding: 20px;
+        min-height: 100px;
+    }
+    #detailHeader{
+        @include detailHeader
+
+    }
+    #overview_reviews{
+        @include overview_reviews;
+
+    }
+    
+}

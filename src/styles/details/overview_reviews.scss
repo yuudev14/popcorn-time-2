@@ -1,0 +1,37 @@
+@import '../variables.scss';
+
+@mixin overview_reviews{
+    display: flex;
+    flex-direction: column;
+    .overview{
+        
+        .addFav{
+            color: $secondaryColor;
+            padding: 10px;
+            border: 1px solid $secondaryColor;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            width: 40%;
+            i{
+                margin-right: 10px;
+            }
+        }
+        .synopsis{
+            margin-top: 10px;
+            color: $secondaryColor;
+        }
+    }
+
+    @media only screen and (min-width: 500px){
+        flex-direction: row;
+        .overview{
+            width: 60%;
+        }
+        .reviews{
+            width: 40%;
+
+        }
+    }
+
+}

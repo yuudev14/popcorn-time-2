@@ -3,6 +3,7 @@ import {usePrevious} from 'react-use';
 import { randomNumber, saveFromFavorites } from '../../methods/method';
 import { connect } from 'react-redux';
 import { getTrendingAction } from '../../store/action/trendingAction';
+import {Link} from 'react-router-dom';
 
 const Trending = (props) => {
 
@@ -19,11 +20,14 @@ const Trending = (props) => {
     const [throttleTime2, setThrottleTime2] = useState(0);
     const [dayMode, setDayMode] = useState('day');
     const prevDayMode = usePrevious(dayMode)
-    const daySwitch = useRef()
 
     const colors = ['#62bccc', '#337ac0', '#ee9323', '#F2b922']
 
     const setShowNumTimeout = () => {
+        timeOut.forEach(timeId => {
+            clearTimeout(timeId);
+        })
+        // console.log(showNum, prevShowNum, showNum >= trendings.length - 1 ? 0 : showNum + 1);
         setTimeOut([...timeOut, setTimeout(() => {            
             setShowNum(showNum >= trendings.length - 1 ? 0 : showNum + 1);
         }, 5000)])
@@ -35,11 +39,11 @@ const Trending = (props) => {
             
             setTimeOut([setTimeout(() => {            
                 setShowNum(0);
-            })]);
+            }, 100)]);
 
-            timeOut.forEach(timeId => {
-                clearTimeout(timeId);
-            })
+            // timeOut.forEach(timeId => {
+            //     clearTimeout(timeId);
+            // })
 
         })()
 
@@ -72,9 +76,7 @@ const Trending = (props) => {
     const showPoster = document.querySelectorAll('#trending .poster')
 
     useEffect(() => {
-        timeOut.forEach(timeId => {
-            clearTimeout(timeId);
-        })
+        
         
         showInfo.forEach((element, i) => {
 
@@ -135,14 +137,12 @@ const Trending = (props) => {
             }
 
         })
+        // console.log(prevShowNum !== undefined)
         if(prevShowNum !== undefined){
             setShowNumTimeout();
 
         }
-
-        
-        
-        
+ 
         
     }, [showNum]);
 
@@ -237,7 +237,7 @@ const Trending = (props) => {
                                 <li>Vote Count: {show.vote_count}</li>
                                 <li>{show.media_type === 'tv' ? `First Air: ${show.first_air_date}` : `Release Date: ${show.release_date}`}</li>
                             </ul>
-                            <button className='moreDetails'>More Details</button>
+                            <Link to={`/details/${show.id}`} className='moreDetails'>More Details</Link>
 
                         </div>
                     ))}

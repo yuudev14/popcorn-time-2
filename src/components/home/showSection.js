@@ -23,7 +23,6 @@ const ShowSection = (props) => {
 
     useEffect(() => {
         getShow();
-        console.log('1')
 
     }, [mediaType]);
 

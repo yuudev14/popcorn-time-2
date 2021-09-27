@@ -1,12 +1,23 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import sample from '../assets/sampleCover.jpg';
 import sample2 from '../assets/sample.jpg';
 import '../styles/details/details.scss';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router';
+import { setDetailsAction } from '../store/action/detailsActon';
 
-const Details = () => {
-    const backgroundRef = useRef();
+const Details = (props) => {
+    const {
+        setDetailsDispatch,
+    }  = props;
+    const {id} = useParams()
     useEffect(() => {
-
+        (async() => {
+            try{
+                await setDetailsDispatch(id);
+            }catch(e){
+            }
+        })()
     }, [])
 
     return (
@@ -79,4 +90,14 @@ const Details = () => {
     )
 }
 
-export default Details
+const mapStateToProps = state=> {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setDetailsDispatch : (id) => dispatch(setDetailsAction(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details)

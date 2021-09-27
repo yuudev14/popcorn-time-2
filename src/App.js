@@ -3,23 +3,48 @@ import Nav from "./components/nav/nav"
 import Details from "./pages/details"
 import Home from "./pages/home"
 import './styles/app.scss'
+import { connect } from "react-redux"
+import { getGenreAction } from "./store/action/genreAction"
+import { useEffect } from "react"
+const App = (props) => {
+  const {
+    getGenreDispatch,
+    genres
 
-const App = () => {
+  } = props;
+
+  useEffect(() => {
+    getGenreDispatch();
+  }, [])
 
   return (
     <div className="App">
-      <HashRouter>
-        <Nav />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/details/:id' component={Details} />
-        </Switch>
-      </HashRouter>
+      {genres.length > 0 && (
+        <HashRouter>
+          <Nav />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/details/:id' component={Details} />
+          </Switch>
+        </HashRouter>
+
+      )}
+      
+      
       <footer>
         <div className='containerOpacity'></div>
       </footer>
     </div>
   );
 }
-
-export default App;
+const mapStateToProps = state => {
+  return {
+    genres : state.genres,
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    getGenreDispatch : () => dispatch(getGenreAction()),
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

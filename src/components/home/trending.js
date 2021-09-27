@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState} from 'react';
 import {usePrevious} from 'react-use';
 import { randomNumber, saveFromFavorites } from '../../methods/method';
 import { connect } from 'react-redux';
@@ -9,7 +9,8 @@ const Trending = (props) => {
 
     const {
         getTrendingDispatch,
-        trendings
+        trendings,
+        genres,
 
     } = props;
 
@@ -27,7 +28,6 @@ const Trending = (props) => {
         timeOut.forEach(timeId => {
             clearTimeout(timeId);
         })
-        // console.log(showNum, prevShowNum, showNum >= trendings.length - 1 ? 0 : showNum + 1);
         setTimeOut([...timeOut, setTimeout(() => {            
             setShowNum(showNum >= trendings.length - 1 ? 0 : showNum + 1);
         }, 5000)])
@@ -35,51 +35,35 @@ const Trending = (props) => {
     }
     useEffect(() => {
         (async() => {
-            await getTrendingDispatch(dayMode);
-            
+            await getTrendingDispatch(dayMode, genres);
             setTimeOut([setTimeout(() => {            
                 setShowNum(0);
             }, 100)]);
 
-            // timeOut.forEach(timeId => {
-            //     clearTimeout(timeId);
-            // })
-
-        })()
-
-
-        
-        
-        
+        })();
+        return () => {
+            timeOut.forEach(timeId => {
+                clearTimeout(timeId);
+            })
+        }
     }, []);
-    useEffect(() => {
-        
-        if(prevDayMode !== undefined || prevDayMode !== dayMode){
-            
+
+    useEffect(() => {    
+        if(prevDayMode !== undefined){
             (async() => {
-                
-            
-                await getTrendingDispatch(dayMode);
+                await getTrendingDispatch(dayMode, genres);
                 setTimeOut([...timeOut, setTimeout(() => {            
                     setShowNum(0);
                 })]);
-    
             })()
-
         }
-
-
-        
-        
     }, [dayMode]);
+
     const showInfo = document.querySelectorAll('#trending .showInfo');
     const showPoster = document.querySelectorAll('#trending .poster')
 
     useEffect(() => {
-        
-        
         showInfo.forEach((element, i) => {
-
             //when the slidesho comes back from the start, the last show's transition would be none to fixed animation error
             if(showNum === 0){
                 if(i === trendings.length - 1){
@@ -92,8 +76,6 @@ const Trending = (props) => {
             }else{
                 element.style.transition = '.5s';
             }
-
-
             //if the current show is being viewed, the opacitiy would be 1
             if(showNum === i){
                 element.classList.remove('hideInfo');
@@ -106,7 +88,6 @@ const Trending = (props) => {
             }else{    
                 element.style.transform = `translateX(${-100 * (showNum) }%)`;
             }
-            
         });
 
         showPoster.forEach((element, i) => {
@@ -147,7 +128,6 @@ const Trending = (props) => {
     }, [showNum]);
 
     const changeShow = (val) => {
-
         const time = new Date().getTime();
         if(time > throttleTime ){
             setThrottleTime(time + 500);
@@ -161,47 +141,33 @@ const Trending = (props) => {
                     if(val <= -1){
                         return trendings.length - 1
                     }
-
                 }
                 return val >= trendings.length ? 0 : val;
-
             });
         }
     }
 
     const dayModeChange = (e) =>{
         const val = e.target.checked
-
         const time = new Date().getTime();
         if(time > throttleTime2 ){
-            
             setThrottleTime2(time + 1000);
             [...showInfo, ...showPoster].forEach(element => {
                 element.style.transition = '0.5s';
-
             })
             setDayMode(val ? 'week' : 'day')
         }
-        
-        
-        
     }
-
-    
     return (
         <div id='trending'>
-            <div className='containerOpacity'></div>
-            
+            <div className='containerOpacity'></div>      
             <section className='trendingContainer'> 
                 <input checked={dayMode === 'day' ? false : true} onChange={dayModeChange} type='checkbox' id='media_type' name='media_type'/>
-                <label htmlFor='media_type'>
-                    
+                <label htmlFor='media_type'>   
                     <p className='daySwitch'>Day</p>
                     <p className='weekSwitch'>Week</p>
                     <div className='circle'>
-
                     </div>
-
                 </label>
                 <i className='slideBtn fa fa-arrow-circle-left' onClick={() => changeShow(-1)}></i>
                 <div className='showinfoContainer'>
@@ -210,10 +176,7 @@ const Trending = (props) => {
                             <ul className='genres'>
                                 {show.genres && show.genres.map(genre => 
                                     <li style={{backgroundColor : colors[randomNumber(colors.length - 1)]}}>{genre}</li>
-
                                 )}
-                                
-                        
                             </ul>
                             <h1>{show.name || show.title}</h1>
                             <ul className='buttons'>
@@ -222,10 +185,7 @@ const Trending = (props) => {
                                         <i className='fa fa-play'></i>
                                         <p>Watch trailer</p>
                                     </li></a>
-
                                 )}
-                                
-
                                 <li onClick={() => saveFromFavorites(show.id)}>
                                     <i className='fa fa-heart'></i>
                                     <p>Add To Favorites</p>
@@ -238,7 +198,6 @@ const Trending = (props) => {
                                 <li>{show.media_type === 'tv' ? `First Air: ${show.first_air_date}` : `Release Date: ${show.release_date}`}</li>
                             </ul>
                             <Link to={`/details/${show.id}`} className='moreDetails'>More Details</Link>
-
                         </div>
                     ))}
                 </div>
@@ -246,10 +205,8 @@ const Trending = (props) => {
                     {trendings.map(show => (
                         <div className='poster'>
                             <img src={`http://image.tmdb.org/t/p/w500/${show.poster_path}`} />
-                        </div>
-                        
+                        </div>  
                     ))}
-
                 </div>
                 <i className='slideBtn fa fa-arrow-circle-right' onClick={() => changeShow(1)}></i>
             </section>
@@ -260,12 +217,13 @@ const Trending = (props) => {
 
 const mapStateToProps = state => {
     return {
-        trendings : state.trendings
+        trendings : state.trendings,
+        genres : state.genres,
     }
 };
 const mapDispatchToProps = dispatch => {
     return {
-        getTrendingDispatch : (dayMode) => dispatch(getTrendingAction(dayMode))
+        getTrendingDispatch : (dayMode, genres) => dispatch(getTrendingAction(dayMode, genres))
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Trending)

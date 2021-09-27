@@ -1,11 +1,13 @@
-import { SET_DETAILS } from "../type";
+import { SET_DETAILS, SET_DETAILS_EMPTY } from "../type";
 
 const initState = {};
 
 const detailReducer = (state = initState, action) => {
     switch(action.type){
         case SET_DETAILS:
-            return action.data
+            return action.data;
+        case SET_DETAILS_EMPTY:
+            return {}
         default:
             return state
     }

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { setDetailsAction } from '../store/action/detailsActon';
 
-const Details = (props) => {
+const TVDetails = (props) => {
     const {
         setDetailsDispatch,
     }  = props;
@@ -14,7 +14,7 @@ const Details = (props) => {
     useEffect(() => {
         (async() => {
             try{
-                await setDetailsDispatch(id);
+                await setDetailsDispatch(id, 'tv');
             }catch(e){
             }
         })()
@@ -23,8 +23,6 @@ const Details = (props) => {
     return (
         <div id='details'>
             <section id='detailHeader'>
-                
-
                 <img className='backgroundImg' src={sample} />
                 <div className='background'></div>
                 <div className='showTitle'>
@@ -96,8 +94,8 @@ const mapStateToProps = state=> {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setDetailsDispatch : (id) => dispatch(setDetailsAction(id))
+        setDetailsDispatch : (id, media_type) => dispatch(setDetailsAction(id, media_type))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Details)
+export default connect(mapStateToProps, mapDispatchToProps)(TVDetails)

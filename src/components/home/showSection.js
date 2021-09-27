@@ -44,7 +44,7 @@ const ShowSection = (props) => {
                                 <i className='fa fa-star'></i>
                                 <p>{show.vote_average}</p>
                             </div>
-                            <h4>{show.title}</h4>
+                            <h4>{show.title || show.original_name}</h4>
                             <button>More Details</button>
                         </div>
                     </div>

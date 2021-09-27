@@ -1,6 +1,7 @@
 import { HashRouter, Route, Switch } from "react-router-dom"
 import Nav from "./components/nav/nav"
-import Details from "./pages/details"
+import MovieDetails from "./pages/movie_details"
+import TVDetails from "./pages/tv_details"
 import Home from "./pages/home"
 import './styles/app.scss'
 import { connect } from "react-redux"
@@ -24,7 +25,8 @@ const App = (props) => {
           <Nav />
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route path='/details/:id' component={Details} />
+            <Route path='/movie/details/:id' component={MovieDetails} />
+            <Route path='/tv/details/:id' component={TVDetails} />
           </Switch>
         </HashRouter>
 

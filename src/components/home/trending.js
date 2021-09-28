@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import {usePrevious} from 'react-use';
-import { randomNumber, saveFromFavorites } from '../../methods/method';
+import { getRandomColor, saveFromFavorites } from '../../utils/method';
 import { connect } from 'react-redux';
 import { getTrendingAction } from '../../store/action/trendingAction';
 import {Link} from 'react-router-dom';
@@ -22,7 +22,7 @@ const Trending = (props) => {
     const [dayMode, setDayMode] = useState('day');
     const prevDayMode = usePrevious(dayMode)
 
-    const colors = ['#62bccc', '#337ac0', '#ee9323', '#F2b922']
+    
 
     const setShowNumTimeout = () => {
         timeOut.forEach(timeId => {
@@ -175,7 +175,7 @@ const Trending = (props) => {
                         <div key={i} className='showInfo'>
                             <ul className='genres'>
                                 {show.genres && show.genres.map(genre => 
-                                    <li style={{backgroundColor : colors[randomNumber(colors.length - 1)]}}>{genre}</li>
+                                    <li style={{backgroundColor : getRandomColor()}}>{genre}</li>
                                 )}
                             </ul>
                             <h1>{show.name || show.title}</h1>

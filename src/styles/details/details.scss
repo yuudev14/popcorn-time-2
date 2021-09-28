@@ -11,9 +11,7 @@
         @include detailHeader
 
     }
-    #overview_reviews{
-        @include overview_reviews;
 
-    }
+    @include overview_reviews;
     
 }

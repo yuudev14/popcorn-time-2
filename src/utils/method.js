@@ -1,3 +1,7 @@
+const colors = ['#62bccc', '#337ac0', '#ee9323', '#F2b922'];
+
+export const getRandomColor = () => colors[randomNumber(colors.length - 1)]
+
 export const randomNumber = (num) => {
     return Math.ceil(Math.random() * num);
 

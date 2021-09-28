@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
-import sample from '../assets/sampleCover.jpg';
-import sample2 from '../assets/sample.jpg';
+import React, {useEffect, useState} from 'react';
 import '../styles/details/details.scss';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { setDetailsAction, setEmptyDetailAction } from '../store/action/detailsActon';
+import ShowHeader from '../components/details/showHeader';
 
 const MovieDetails = (props) => {
     const {
@@ -12,7 +11,9 @@ const MovieDetails = (props) => {
         details,
         setEmptyDetailDispatch,
     }  = props;
-    const {id} = useParams()
+
+    const [trailerIndex, setTrailerIndex] = useState(0);
+    const {id} = useParams();
     useEffect(() => {
         (async() => {
             try{
@@ -25,33 +26,23 @@ const MovieDetails = (props) => {
             setEmptyDetailDispatch();
 
         }
-    }, [])
+    }, []);
+
+    const updateTrailerIndex = (num) => {
+        if(trailerIndex + num > details.videos.length - 1){
+            setTrailerIndex(details.videos.length - 1)
+        }else if(trailerIndex + num < 0){
+            setTrailerIndex(0)
+        }else{
+            setTrailerIndex(trailerIndex + num)
+        }
+    }
 
     return (
         <div id='details'>
             {Object.keys(details).length > 0 && (
                 <>
-                    <section id='detailHeader'>
-                        <img className='backgroundImg' src={`http://image.tmdb.org/t/p/w1280/${details.backdrop_path}`} />
-                        <div className='background'></div>
-                        <div className='showTitle'>
-                            <img src={`http://image.tmdb.org/t/p/w500/${details.poster_path}`} />
-                            <h1>{details.title}</h1>
-                            
-                            <ul>
-                                {details.genres.map(genre => (
-                                    <li>{genre.name}</li>
-
-                                ))}
-                            </ul>
-                        </div>
-                        <div className='headerInfo'>             
-                            <div className='rating'>
-                                <i className='fa fa-star'></i>
-                                <p>{details.vote_average}/10</p>
-                            </div>
-                        </div>
-                    </section>
+                    <ShowHeader details={ details }/>
                     <section id='overview_reviews'>
                         <div className='overview'>
                             <div className='addFav' >
@@ -59,28 +50,46 @@ const MovieDetails = (props) => {
                                 <p>Add To Favorites</p>
                             </div>
                             <div className='synopsis'>
-                                <h3>Synopsis</h3>
-                                <p>{details.tagline}</p>
+                                <h3>Synopsis</h3>      
                                 <p>{details.overview}</p>
                             </div>
+                            { details.videos.length > 0 && (
+                                <section id='trailers'>
+                                    <div className='video'>
+                                        <i className='fa fa-arrow-left' 
+                                            onClick={() => updateTrailerIndex(-1)}
+                                            style={{color : trailerIndex ===  0 ? '#44615e' : '#16bbac'}}
+                                        ></i>
+                                        <i className='fa fa-arrow-right' 
+                                            onClick={() => updateTrailerIndex(1)}
+                                            style={{color : trailerIndex ===  details.videos.length - 1 ? '#44615e' : '#16bbac'}}
+                                        ></i>
+                                        <iframe src={`https://www.youtube.com/embed/${details.videos[trailerIndex].key}`}></iframe>
+                                    </div>
+                                </section>
+
+                            ) }
+                            {/* <section id='photos'>
+                                <div className='photoViewer'>
+                                </div>
+                                <ul className='photosList'>
+                                </ul>
+                            </section> */}
                         </div>
                         <div className='reviews'>
-                            <div className='review'>
+                            <h2>Reviews</h2>
+                            <div className='reviewContainer'>
+                                { details.reviews.map(review => (
+                                    <div className='review'>
+                                        <p className='date'>{review.created_at}</p>
+                                        <p>{review.content}</p>
+                                    </div>
+
+                                )) }
                             </div>
                         </div>
                     </section>
-                    <section id='trailers'>
-                        <div className='video'>
-                        </div>
-                        <ul className='videos'>
-                        </ul>
-                    </section>
-                    <section id='photos'>
-                        <div className='photoViewer'>
-                        </div>
-                        <ul className='photosList'>
-                        </ul>
-                    </section>
+                    
                 </>
             )}
         </div>

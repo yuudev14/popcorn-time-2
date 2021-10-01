@@ -197,7 +197,7 @@ const Trending = (props) => {
                                 <li>Vote Count: {show.vote_count}</li>
                                 <li>{show.media_type === 'tv' ? `First Air: ${show.first_air_date}` : `Release Date: ${show.release_date}`}</li>
                             </ul>
-                            <Link to={show.media_type === 'movie' ? `/movie/details/${show.id}` : `/tv/details/${show.id}`} className='moreDetails'>More Details</Link>
+                            <Link to={`/${show.media_type}/details/${show.id}`} className='moreDetails'>More Details</Link>
                         </div>
                     ))}
                 </div>

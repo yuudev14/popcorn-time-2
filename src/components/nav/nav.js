@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import '../../styles/nav/nav.scss'
 import logo from '../../assets/logo.png'
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
     const menuRef = useRef();
@@ -19,7 +20,7 @@ const Nav = () => {
         <header>
             <div id='nav'>
                 <i className='fa fa-bars' onClick={toggleMenu}></i>
-                <img src={logo} />
+                <Link to='/'><img src={logo} /></Link>
                 <ul id='menu' ref={menuRef}>
                     <i className='fa fa-close' onClick={toggleMenu}></i>
                     <li>

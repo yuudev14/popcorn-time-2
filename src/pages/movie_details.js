@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import '../styles/details/details.scss';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { setDetailsAction, setEmptyDetailAction } from '../store/action/detailsActon';
 import ShowHeader from '../components/details/showHeader';
@@ -8,29 +8,23 @@ import Overview from '../components/details/overview';
 import Reviews from '../components/details/reviews';
 
 const MovieDetails = (props) => {
-    const {
-        setDetailsDispatch,
-        details,
-        setEmptyDetailDispatch,
-    }  = props;
 
-    
+    const details = useSelector(state => state.details);
+    const dispatch = useDispatch()
     const {id} = useParams();
+
     useEffect(() => {
         (async() => {
             try{
-                await setDetailsDispatch(id, 'movie');
+                await dispatch(setDetailsAction(id, 'movie'));
             }catch(e){
             }
         })()
 
         return () => {
-            setEmptyDetailDispatch();
-
+            dispatch(setEmptyDetailAction())
         }
     }, []);
-
-    
 
     return (
         <div id='details'>
@@ -48,17 +42,4 @@ const MovieDetails = (props) => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        details : state.details,
-    };
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        setDetailsDispatch : (id, movie_type) => dispatch(setDetailsAction(id, movie_type)),
-        setEmptyDetailDispatch : () => dispatch(setEmptyDetailAction())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetails)
+export default MovieDetails

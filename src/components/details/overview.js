@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Overview = (props) => {
     const {
@@ -15,6 +16,10 @@ const Overview = (props) => {
         }else{
             setTrailerIndex(trailerIndex + num)
         }
+    }
+
+    const showSeason = (e) => {
+        e.target.nextSibling.classList.toggle('showEpisodeList');
     }
     return (
             <div className='overview'>
@@ -48,6 +53,20 @@ const Overview = (props) => {
                     <ul className='photosList'>
                     </ul>
                 </section> */}
+                <section className='seasonSection'>
+                    <ul className='seasonList'>
+                        {details.seasons && details.seasons.map((season, index) => (
+                            <li className='season'>
+                                <div className='seasonNum' onClick={showSeason}>Season {index + 1}</div>
+                                <ul className='episodeList'>
+                                    {Array.from(Array(season.episode_count).keys()).map((n, i) => (
+                                        <Link><li>Episode {i + 1}</li></Link>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
             </div>
     )
 }

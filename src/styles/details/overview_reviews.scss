@@ -58,6 +58,44 @@
                     }
                 }
             }
+            .seasonSection {
+                ul {
+                    list-style-type: none;
+                }
+                .seasonList{
+                    .season{
+                        overflow: hidden;
+                        margin-bottom: 10px;
+                        .seasonNum{
+                            background-color: #16bbac;
+                            padding: 5px;
+                            border-radius: 12px;
+                            color: white;
+                            cursor: pointer;
+                            
+                            
+                        }
+                        .episodeList {
+                            max-height: 0px;
+                           
+                        }
+
+                        .showEpisodeList {
+                            max-height: 50000px;
+                        }
+
+                        .episodeList li{
+                            margin: 10px 0;
+                            padding-left: 30px;
+                            color: white;
+                            width: 100%;
+                            &:hover {
+                                color: $quinaryColor;
+                            }
+                        }
+                    }
+                }
+            }
         }
         .reviews{
             width: 100%;

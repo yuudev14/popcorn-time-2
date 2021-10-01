@@ -5,13 +5,14 @@ const ShowHeader = (props) => {
     const {
         details
     } = props;
+    console.log(details);
     return (
         <section id='detailHeader'>
             <img className='backgroundImg' src={`http://image.tmdb.org/t/p/w1280/${details.backdrop_path}`} />
             <div className='background'></div>
             <div className='showTitle'>
                 <img src={`http://image.tmdb.org/t/p/w500/${details.poster_path}`} />
-                <h1>{details.title}</h1>
+                <h1>{details.title || details.name}</h1>
                 <p className='tagline'>{details.tagline}</p>
                 <ul>
                     {details.genres.map(genre => (
